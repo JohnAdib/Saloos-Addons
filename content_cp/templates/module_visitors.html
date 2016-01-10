@@ -1,0 +1,157 @@
+{%extends display.cp%}
+
+
+{%block content%}
+ <div class="row">
+  <div class="span12">
+   <div class="panel panel-default">
+
+    <div class="panel-body">
+{%if visitors%}
+     <div class="row auto unselectable">
+{%if error%}<div id="chart-error">{{error}}</div>{%else%}{%endif%}
+      <div id="chart-pageviews" data-step='5' data-intro='{%trans "Daily Visit Chart"%}'></div>
+      <div>
+       <span>{%trans "Change type of chart to"%}: </span>
+       <a href="{{url.path}}?type=bar">{%trans "bar"%}</a> -
+       <a href="{{url.path}}?type=area">{%trans "area"%}</a> -
+       <a href="{{url.path}}?type=areaspline">{%trans "areaspline"%}</a> -
+       <a href="{{url.path}}?type=column">{%trans "column"%}</a>
+      </div>
+     </div>
+
+     <br /><br /><br />
+     <div class="row auto unselectable">
+{%if error%}<div id="chart-error">{{error}}</div>{%else%}{%endif%}
+      <div id="chart-unique-visitors1" data-step='5' data-intro='{%trans "Daily Visit Chart"%}'></div>
+     </div>
+
+
+
+
+
+{%endif%}
+    </div>
+
+    <div class="panel-footer">
+    <a class="float-right label label-info" href="{{url.base}}">{%trans%}Back to{%endtrans%} {%trans "Dashboard"%}</a>
+     {%trans "View visitor statistics for your website"%}
+    </div>
+   </div>
+  </div>
+ </div>
+{%endblock%}
+
+{%block foot_js%}
+{%if visitors%}
+ <script type="text/javascript">
+  route('*', function() 
+  {
+    $(function () { 
+      $('#chart-pageviews').highcharts({
+        chart: { type: '{{chart_type}}' {%if global.lang=='fa_IR'%}, style: {fontFamily: 'IRANSans'}{%endif%} },
+        title: { text: '{%trans "No. of"%} {%trans "Pageviews"%}' },
+        xAxis: { categories: [{%for datarow in visitors%}'{%if global.lang=="fa_IR"%}{{datarow.date|jdate("y/m/j")}} {%else%} {{datarow.date |date("j F")}}{%endif%}', {%endfor%}] ,crosshair: true},
+        yAxis: { title: {text: ''}, floor: 0, allowDecimals: false,},
+        tooltip: {
+          shared:true,
+          useHTML: true,
+
+          headerFormat: '<table><thead><tr><td colspan="3">{%if global.lang=="fa_IR"%}{point.key} {%else%} {{point.key | date("l j F Y")}} {%endif%}</td></tr></thead>',
+          pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' + '<td><b>{point.y:0.0f} {%trans "Visit"%}</b></td></tr>',
+          footerFormat: '</table>',
+          
+
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        plotOptions: {
+          series: {stacking: 'normal',
+        }
+
+        },
+        series:
+        [
+        {
+         showInLegend: false,
+          name: '{%trans "Page Views"%}',
+          data: [ {%for datarow in visitors%}{{datarow.humans}},{%endfor%} ],
+        },
+        {
+         showInLegend: false,
+          name: '{% trans "Bots"%}',
+          data: [ {%for datarow in visitors%}{{datarow.bots}},{%endfor%} ],
+        },
+        ]
+      });
+    });
+
+  });
+ </script>
+
+
+
+ <script type="text/javascript">
+  route('*', function() 
+  {
+    $(function () { 
+      $('#chart-unique-visitors').highcharts({
+        chart: { type: '{{chart_unique_type}}' {%if global.lang=='fa_IR'%}, style: {fontFamily: 'IRANSans'}{%endif%} },
+        title: { text: '{%trans "No. of"%} {%trans "visitors"%}' },
+        xAxis: { categories: [{%for datarow in visitors%}'{%if global.lang=="fa_IR"%}{{datarow.date|jdate("y/m/j")}} {%else%} {{datarow.date |date("j F")}}{%endif%}', {%endfor%}] ,crosshair: true},
+        yAxis: { title: {text: ''}, floor: 0, allowDecimals: false,},
+        tooltip: {
+          shared:true,
+          useHTML: true,
+
+          headerFormat: '<table><thead><tr><td colspan="3">{%if global.lang=="fa_IR"%}{point.key} {%else%} {{point.key | date("l j F Y")}} {%endif%}</td></tr></thead>',
+          pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' + '<td><b>{point.y:0.0f} {%trans "Visit"%}</b></td></tr>',
+          footerFormat: '</table>',
+          
+
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        plotOptions: {
+          series: {stacking: 'normal',
+        }
+
+        },
+        series:
+        [
+        {
+         showInLegend: false,
+          name: '{%trans "Page Views"%}',
+          data: [ {%for datarow in visitors%}{{datarow.humans}},{%endfor%} ],
+        },
+        {
+         showInLegend: false,
+          name: '{% trans "Bots"%}',
+          data: [ {%for datarow in visitors%}{{datarow.bots}},{%endfor%} ],
+        },
+        ]
+      });
+    });
+
+  });
+ </script>
+
+
+
+
+
+
+
+{%endif%}
+{%endblock%}
+
+
+

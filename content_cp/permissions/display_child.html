@@ -1,0 +1,95 @@
+{%extends display.cp%}
+
+
+{%block content%}
+
+ <div class="panel panel-default unselectable permission-content">
+  <div class="panel-body">
+{% if permissions is iterable and permissions%}
+   <form class="ajx autostyle" method="post">
+    <div class="row auto">
+     <div class="span2"></div>
+{% for myContent, myPerm in permissions%}
+     <div class="span2">
+      <input type="checkbox" name="content-{{myContent}}" id="content-{{myContent}}" class="checkbox" {%if myPerm.enable%}checked{%endif%}>
+      <label for="content-{{myContent}}"><span>{%trans myContent%}</span></label>
+     </div>
+{% if  loop.index % 5 == 0  %}
+    </div>
+    <div class="row">
+{% endif %}
+
+{% endfor %}
+   </div>
+
+
+    <button type="submit" class="button primary row-clear" name="submit" id="submit">{%trans "Save Changes"%}</button>
+   </form>
+{% endif %}
+  </div>
+  <div class="panel-footer">{%trans "You are change this type of permission"%}: <b>{%trans child%}</b></div>
+ </div>
+
+
+
+{% for myContent, myPerm in permissions%}
+{% if myPerm is iterable and myPerm%}
+ <div class="panel panel-default unselectable sensetive permission-detail closed {%if myPerm.enable != true%}display-none{%endif%}" id="content-{{myContent}}-detail">
+  <div class="panel-heading">{%trans "Edit permission of"%} {%trans myContent%}</div>
+  <div class="panel-body">
+   <form class="ajx autostyle" method="post">
+
+{% if myPerm.modules is iterable and myPerm.modules%}
+    <div class="row auto head">
+     <div class="span2"></div>
+     <div class="span2 hint--top allAll" data-hint='{%trans "Allow or disallow user to access all part of service with full permission!"%}'>{%trans "All"%}</div>
+     <div class="span1 hint--top allSelect" data-hint='{%trans "Allow or disallow user to view all part of service"%}'>{%trans "Select"%}</div>
+     <div class="span1 hint--top allAdd" data-hint='{%trans "Allow or disallow user to insert in all part of service"%}'>{%trans "Add"%}</div>
+     <div class="span1 hint--top allEdit" data-hint='{%trans "Allow or disallow user to edit all part of service"%}'>{%trans "Edit"%}</div>
+     <div class="span1 hint--top allDelete" data-hint='{%trans "Allow or disallow user to delete in all part of service"%}'>{%trans "Delete"%}</div>
+    </div>
+{% for permLoc, permAccess in myPerm.modules%}
+{%set field = myContent ~ '-' ~ permLoc%}
+    <div class="row auto">
+     <div class="span2"><label for={{field}}-all>{%trans permLoc%}</label></div>
+
+     <div class="span2">
+      <input type="checkbox" name="{{field}}-all" id="{{field}}-all" class="checkbox" {%if permAccess.select and permAccess.add and permAccess.edit and permAccess.delete%}checked{%endif%}>
+      <label for="{{field}}-all"><span></span></label>
+     </div>
+
+     <div class="span1">
+      <input type="checkbox" name="{{field}}-select" id="{{field}}-select" class="checkbox" {%if permAccess.select%}checked{%endif%}>
+      <label for="{{field}}-select"><span></span></label>
+     </div>
+
+     <div class="span1">
+      <input type="checkbox" name="{{field}}-add" id="{{field}}-add" class="checkbox" {%if permAccess.add%}checked{%endif%}>
+      <label for="{{field}}-add"><span></span></label>
+     </div>
+
+     <div class="span1">
+      <input type="checkbox" name="{{field}}-edit" id="{{field}}-edit" class="checkbox" {%if permAccess.edit%}checked{%endif%}>
+      <label for="{{field}}-edit"><span></span></label>
+     </div>
+
+     <div class="span1">
+      <input type="checkbox" name="{{field}}-delete" id="{{field}}-delete" class="checkbox" {%if permAccess.delete%}checked{%endif%}>
+      <label for="{{field}}-delete"><span></span></label>
+     </div>
+
+    </div>
+{% endfor %}
+
+{% else%}
+<p class="alert alert-info">{% trans "Empty"%}</p>
+{% endif%}
+
+   </form>
+  </div>
+  <div class="panel-footer">{%trans "In this section you can edit permission of"%}: <b>{%trans myContent%}</b></div>
+ </div>
+{% endif%}
+{% endfor %}
+
+{%endblock%}

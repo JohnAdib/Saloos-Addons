@@ -1,0 +1,184 @@
+{%extends display.cp%}
+
+
+{%block content%}
+ <div class="row">
+  <div class="span12">
+   <div class="panel panel-default display-none">
+     <div class="panel-body">
+{%block datatable%}
+{%if include.datatable%}
+       <table class="{%if datatable.total <100 %}datatable{%else%}hidden{%endif%} display responsive nowrap" cellspacing="0" width="100%" {%if datatable.total >100 %}data-tablesrc='{{module}}/list' {%endif%}>
+{%if datatable.total >100 %}
+        <tbody>
+          <tr>
+           <td>
+           {%set datatable = datatable|merge({"recordsFiltered": datatable.filter, "recordsTotal": datatable.total})%}
+           {{datatable|json_encode()|raw}}
+
+           </td>
+          </tr>
+        </tbody>
+{%else%}
+        <thead>
+        <tr>
+        <th class="column_row"></th>
+{%for value in datatable.columns if value.table%}
+        <th>{{value.label}}</th>
+{%endfor%}
+        <th class="column_actions">{%trans "Actions"%}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+{%block tbody%}
+{%for d in datatable.data%}
+        <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+         <td class="col_row">{{loop.index}}</td>
+{%for col,value in datatable.columns if value.table%}
+{%set myvalue = attribute(d,col)%}
+{% if value.value == 'slug'%}
+         <td class="col_{{value.value}}">{{myvalue}}</td>
+{% elseif value.value == 'title'%}
+         <td class="col_{{value.value}}"><a href='{{url.base}}{{module}}/edit={{d.id}}'>{{myvalue}}</a></td>
+{% elseif value.value == 'url'%}
+         <td class="col_{{value.value}}"><a target='_blank' href='{{url.root}}{{myvalue}}?preview=yes'>{{myvalue}}</a></td>
+{% elseif (value.value == 'publishdate' or value.value == 'createdate' ) and global.lang == 'fa_IR'%}
+         <td class="col_{{value.value}}">{{myvalue|jdate('Y/m/d h:m')}}</td>
+{% elseif value.value == 'filetype'%}
+         <td class="col_{{value.value}}"><i class="fa fa-2x fa-file-{{myvalue.type}}-o"></i></td>
+{%else%}
+         <td class="col_{{value.value}}">{%trans myvalue%}</td>
+{%endif%}
+{%endfor%}
+         <td class="col_actions">
+          <span class="fa-stack">
+            <i class="fa fa-square-o"></i>
+            <a class="fa fa-pencil fa-stack-1x label-default" href="{{url.base}}{{module}}/edit={{d.id}}" ></a>
+          </span>
+
+          <span class="fa-stack">
+            <i class="fa fa-square-o"></i>
+            <a class="fa fa-times fa-stack-1x label-danger" href="{{url.base}}{{module}}/delete={{d.id}}" data-data='{"id": {{d.id}}}' data-method="post" data-modal="delete-confirm"></a>
+          </span>
+         </td>
+        </tr>
+{%endfor%}
+{%endblock%}
+        </tbody>
+{%endif%}
+       </table>
+{%else%}
+  <p class="alert alert-block alert-info">{%trans "Data not exist!"%}</p>
+{%endif%}
+{%endblock%}
+
+     </div>
+     <div class="panel-footer">
+      <a class="float-right label label-info" href="{{url.base}}{{module}}/add">{%trans%}Add New Record{%endtrans%}</a>
+       {{page.desc}}
+     </div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class='modal' id='delete-confirm'>
+  <div class='modal-dialog'>
+   <h3 class='modal-title'>{%trans%}delete record{%endtrans%}</h3>
+   <p class='modal-body'>{%trans%}seriously, are you sure? There's no coming back.{%endtrans%}</p>
+   <div class='modal-footer buttons'>
+    <a class='button' data-cancel>{%trans "Cancel"%}</a>
+    <div class='or' data-text='{%trans "or"%}'></div>
+    <a class='button negative' data-ajaxify data-ok>{%trans "Delete"%}</a>
+   </div>
+  </div>
+ </div>
+
+ <div class='modal' id='foreign-reference'>
+  <div class='modal-dialog'>
+   <h3 class='modal-title'>ایجاد یک پاورقی خارجی</h3>
+   <div class='modal-body'>
+   <p>لطفا پاورقی خود را از درختواره زیر انتخاب کنید</p>
+   <input class="book-foreign-reference" class="tokenize-sample">
+   <span>انتخاب متن از :</span><a id="foreign-reference-content" href="#"></a>
+   <div id="foreign-content">
+   </div>
+   </div>
+   <div class='modal-footer buttons'>
+    <a class='button' data-cancel>{%trans "Cancel"%}</a>
+    <div class='or' data-text='{%trans "or"%}'></div>
+    <a class='button negative' data-ajaxify data-ok>{%trans "Delete"%}</a>
+   </div>
+  </div>
+ </div>
+ <script>
+ document.addEventListener('DOMContentLoaded', function(){
+    $("#foreign-reference-content").click(function(){
+      $.getJSON('/books/options', {type:'getcontent', id:$(this).attr('data-id')}, function(data){
+        console.log(data);
+      });
+    });
+    $('.book-foreign-reference').autoComplete({
+      minChars: 1,
+      source: function(term, response, el){
+        var opt = this;
+        var p = el.parents('.modal');
+        $('input', p).attr('readonly', 'readonly');
+        $('input', p).removeAttr('data-haschild');
+        var onthis = false;
+        var get_content_name;
+        $('input', p).each(function(){
+          if(onthis){
+            $(this).remove();
+            return;
+          }
+          if(this == el[0]) onthis = true;
+        });
+        var req = { type:'getparentlist', search:term };
+        if (el.is('[data-refparent]')){
+          req.parent= el.attr('data-refparent');
+        }
+        $.getJSON('/books/options', req, function(data){
+          $('input', p).removeAttr('readonly');
+          var d = Array();
+          for (var i = 0; i < data.data.length; i++) {
+            d[i] = [data.data[i].title, data.data[i].id];
+          }
+          if(d.length > 0){
+            console.log(d);
+            el.attr('data-haschild', 'true');
+          }
+          response(d);
+        });
+      },
+      renderItem : function(item){
+        return '<div class="onmodal autocomplete-suggestion" data-val="'+item[0]+'" data-id="'+item[1]+'">'+item[0]+'</div>';
+      },
+      onSelect : function(e, v, item, el){
+        $("#foreign-reference-content").text(el.val());
+        $("#foreign-reference-content").attr('data-id', item.attr('data-id'));
+        var p = el.parents('.modal');
+        var onthis = false;
+        $('input', p).each(function(){
+          if(onthis){
+            $(this).remove();
+          }
+          if(this == el[0]) onthis = true;
+        });
+        if(el.is('[data-haschild')){
+          var inp = $('<input class="book-foreign-reference" class="tokenize-sample" data-refparent="'+item.attr('data-id')+'">');
+          inp.insertAfter(el);
+          inp.autoComplete(this);
+           // req.type = 'getcontent';
+           //  req.id = req.parent;
+           //  $.getJSON('/books/options', req, function(data){
+           //    console.log(data);
+           //  });
+        }
+      }
+  });
+  // $('#foreign-reference').addClass('visible');
+ });
+ </script>
+{%endblock%}

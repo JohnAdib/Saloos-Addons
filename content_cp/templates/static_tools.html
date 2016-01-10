@@ -1,0 +1,19 @@
+{%extends display.cp%}
+
+
+{%block content%}
+
+  <p class="alert alert-info">{%trans "You can use our tools"%}</p>
+
+
+  <div class="vertical-menu">
+   <a target='_blank' href="tools/sitemap">{%trans "Regenerate sitemap"%}</a>
+   <a target='_blank' href="tools/twigtrans">{%trans "Extract twig trans func in current project"%}</a>
+   <a target='_blank' href="tools/twigtrans?path=addon">{%trans "Extract twig trans func in saloos addon"%}</a>
+   <a target='_blank' href="tools/dbtables">{%trans "Automatically read database and create sql files"%}</a>
+   <a target='_blank' href="tools/server">{%trans "Show server info"%}</a>
+   <a target='_blank' href="{{url.root}}static/page/info.php">{%trans "Show PHP info"%}</a>
+
+   <a target='_blank' href="socialnetwork">{%trans "social networks"%}</a>
+  </div>
+{%endblock%}

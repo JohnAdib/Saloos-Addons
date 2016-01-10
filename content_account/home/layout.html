@@ -1,0 +1,28 @@
+{%extends display.mvc%}
+{%block head_css%}
+ <link rel="stylesheet"       href="{{url.myStatic}}css/account.css"/>
+{%endblock%}
+
+
+{%block content%}
+<div class="center">
+ <header>{%spaceless%}
+  <a href="{{url.root}}" title="{{site.slogan}}" tabindex="-1" id='logo'>
+   <img src="{{url.static}}images/logo.png" alt='{{site.title}}' />
+  </a>
+ </header>{%endspaceless%}
+
+ <div data-xhr="content" class="content">
+  <h1>{{page.desc}}</h1>
+   <form class="ajx account" method="post" action="{{module}}">
+{{forms.make(form[myform])}}
+   </form>
+
+
+  <footer>
+{%block desc%}{%endblock%}
+  </footer>
+ </div>
+
+</div>
+{%endblock%}
