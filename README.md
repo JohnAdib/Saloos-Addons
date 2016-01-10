@@ -18,7 +18,7 @@ Changelog
 
 Author
 ------
-[Saloos] is Created by [Hasan Salehi] and developing by [Javad Evazzadeh]
+[Saloos Addons] developing by [Javad Evazzadeh].
 
 
 License
@@ -30,5 +30,6 @@ Licence! What does it mean?
 [Saloos on Github]: <https://github.com/Ermile/Saloos>
 [Saloos Official Website]: <http://saloos.ir>
 [Saloos]: <http://saloos.ir>
+[Saloos Addons]: <https://github.com/Ermile/Saloos-Addons>
 [Hasan Salehi]: <http://github.com/baravak>
 [Javad Evazzadeh]: <http://evazzadeh.com>
