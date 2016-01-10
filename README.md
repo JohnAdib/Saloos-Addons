@@ -12,16 +12,13 @@ Already we don't have good documentaion! We hope can complete this before die!
 
 
 Changelog
----------
- * Version 1: initialize!
+=========
+ * Version 1.0.0: seperate addons from saloos and initialize new rep!
+
 
 Author
 ------
-[Saloos] is Created by
-[Javad Evazzadeh]
-Email: J.Evazzadeh@live.com
-Twitter: http://twitter.com/evazzadeh
-GitHub: https://github.com/evazzadeh
+[Saloos] is Created by [Hasan Salehi] and developing by [Javad Evazzadeh]
 
 
 License
