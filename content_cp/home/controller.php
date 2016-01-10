@@ -30,10 +30,10 @@ class controller extends \mvc\controller
 		// 	\lib\error::page(T_("Not found!"));
 
 
-		if( is_file(addon.'content_cp/'.$cpModule.'/model.php') )
+		if( is_file(addons.'content_cp/'.$cpModule.'/model.php') )
 			$this->model_name = 'content_cp\\'.$cpModule.'\model';
 
-		elseif( is_file(addon.'content_cp/'.$mymodule.'/model.php') )
+		elseif( is_file(addons.'content_cp/'.$mymodule.'/model.php') )
 			$this->model_name = 'content_cp\\'.$mymodule.'\model';
 
 
@@ -68,7 +68,7 @@ class controller extends \mvc\controller
 				break;
 
 			default:
-				if( is_file(addon.'content_cp/templates/module_'.$mymodule.'.html') )
+				if( is_file(addons.'content_cp/templates/module_'.$mymodule.'.html') )
 					$this->display_name	= 'content_cp/templates/module_'.$mymodule.'.html';
 				else
 					$this->display_name	= 'content_cp/templates/module_display.html';
@@ -78,7 +78,7 @@ class controller extends \mvc\controller
 				// on each module except home and some special module with child like /post/add
 				if($mychild)
 				{
-					if( is_file(addon.'content_cp/templates/child_'.$mymodule.'.html') )
+					if( is_file(addons.'content_cp/templates/child_'.$mymodule.'.html') )
 						$this->display_name	= 'content_cp/templates/child_'.$mymodule.'.html';
 					else
 						$this->display_name	= 'content_cp/templates/child_display.html';
@@ -133,7 +133,7 @@ class controller extends \mvc\controller
 		}
 
 
-		if( is_file(addon.'content_cp/templates/static_'.$mypath.'.html') )
+		if( is_file(addons.'content_cp/templates/static_'.$mypath.'.html') )
 		{
 			$this->display_name	= 'content_cp/templates/static_'.$mypath.'.html';
 		}

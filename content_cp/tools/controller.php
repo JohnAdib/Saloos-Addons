@@ -92,7 +92,7 @@ class controller extends \content_cp\home\controller
 
 			case null:
 				$mypath   = $this->url('path','_');
-				if( is_file(addon.'content_cp/templates/static_'.$mypath.'.html') )
+				if( is_file(addons.'content_cp/templates/static_'.$mypath.'.html') )
 				{
 					$this->display_name	= 'content_cp/templates/static_'.$mypath.'.html';
 				}

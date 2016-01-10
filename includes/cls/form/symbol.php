@@ -1,5 +1,5 @@
 <?php
-namespace addon\includes\cls\form;
+namespace addons\includes\cls\form;
 
 class symbol extends \lib\form
 {
