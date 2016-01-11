@@ -109,6 +109,9 @@ class controller extends \content_cp\home\controller
 							'edit'   => true,
 							'delete' => true,
 						];
+		$mylist2 = $this->model()->permModulesCp($mylist);
+		return $mylist2;
+
 		$mylist = array_fill_keys($mylist, $default_values);
 		return $mylist;
 	}

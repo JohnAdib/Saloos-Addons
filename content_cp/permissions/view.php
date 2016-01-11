@@ -14,7 +14,7 @@ class view extends \content_cp\home\view
 			// $this->data->site['title'] = " -- " .$myChild;
 
 			// get all content exist in saloos and current project
-			$addons    = glob(addons."content_*", GLOB_ONLYDIR);
+			$addons   = glob(addons."content_*", GLOB_ONLYDIR);
 			$project  = glob(root. "content_*", GLOB_ONLYDIR);
 			$contents = array_merge($addons, $project);
 			$this->data->permissions = ['cp' => [], 'account' => []];

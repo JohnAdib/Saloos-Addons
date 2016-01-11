@@ -201,5 +201,39 @@ class model extends \content_cp\home\model
 			return $qry_result[$pType];
 		}
 	}
+
+	/**
+	 * read permission data and fill in array
+	 * @param  [type] $_list [description]
+	 * @return [type]        [description]
+	 */
+	public function permModulesCp($_list)
+	{
+		$myChild = $this->child();
+		$qry = $this->sql()->table('options')
+				->where('user_id', 'IS', 'NULL')
+				->and('post_id', 'IS', "NULL")
+				->and('option_cat', 'permissions')
+				->and('option_value', $myChild)
+				->and('option_status',"enable");
+
+		$datarow = $qry->select()->assoc('option_meta');
+		if(substr($datarow, 0,1) == '{')
+		{
+			$datarow = json_decode($datarow, true);
+		}
+		$cpModulte  = $datarow['cp'];
+		$permResult = [];
+
+		foreach ($_list as $loc)
+		{
+			if(isset($cpModulte[$loc]) && is_array($cpModulte[$loc]))
+				$permResult[$loc] = $cpModulte[$loc];
+			else
+				$permResult[$loc] = null;
+		}
+
+		return $permResult;
+	}
 }
 ?>
