@@ -13,28 +13,18 @@ class view extends \content_cp\home\view
 			$this->data->page['title'] = T_('Edit'). ' '.T_('permission') .' '. T_($myChild);
 			// $this->data->site['title'] = " -- " .$myChild;
 
-			// get all content exist in saloos and current project
-			$addons   = glob(addons."content_*", GLOB_ONLYDIR);
-			$project  = glob(root. "content_*", GLOB_ONLYDIR);
-			$contents = array_merge($addons, $project);
-			$this->data->permissions = ['cp' => [], 'account' => []];
-			// var_dump($contents);
-			foreach ($contents as $key => $myContent)
-			{
-				$myContent = preg_replace("[\\\\]", "/", $myContent);
-				$myContent = substr( $myContent, ( strrpos( $myContent, "/" ) +1 ) );
-				$myContent = substr( $myContent, ( strrpos( $myContent, "_" ) +1 ) );
-				$this->data->permissions[$myContent] = ['enable' => true, 'modules' => null, 'roles' => null];
-			}
-			$this->data->permissions['SiteContent']   = ['enable' => false, 'modules' => null, 'roles' => null];
+
+			$this->data->permissions = $this->permContents(true);
+			// $this->data->permissions['SiteContent']   = ['enable' => false, 'modules' => null, 'roles' => null];
 			$this->data->permissions['cp']['modules'] = $this->permModules('cp');
+			// var_dump($this->data->permissions);
 
 
-			foreach ($contents as $key => $myContent)
-			{
-				// foreach ($myContent as $module => )
+			// foreach ($contents as $key => $myContent)
+			// {
+			// 	// foreach ($myContent as $module => )
 
-			}
+			// }
 
 			// var_dump($this->data->permissions);
 

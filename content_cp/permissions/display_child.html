@@ -2,11 +2,11 @@
 
 
 {%block content%}
+<form class="ajx autostyle" method="post" action="/permissions/edit={{child}}">
 
  <div class="panel panel-default unselectable permission-content">
   <div class="panel-body">
 {% if permissions is iterable and permissions%}
-   <form class="ajx autostyle" method="post">
     <div class="row auto">
      <div class="span2"></div>
 {% for myContent, myPerm in permissions%}
@@ -24,7 +24,7 @@
 
 
     <button type="submit" class="button primary row-clear" name="submit" id="submit">{%trans "Save Changes"%}</button>
-   </form>
+
 {% endif %}
   </div>
   <div class="panel-footer">{%trans "You are change this type of permission"%}: <b>{%trans child%}</b></div>
@@ -37,7 +37,6 @@
  <div class="panel panel-default unselectable sensetive permission-detail closed {%if myPerm.enable != true%}display-none{%endif%}" id="content-{{myContent}}-detail">
   <div class="panel-heading">{%trans "Edit permission of"%} {%trans myContent%}</div>
   <div class="panel-body">
-   <form class="ajx autostyle" method="post">
 
 {% if myPerm.modules is iterable and myPerm.modules%}
     <div class="row auto head">
@@ -80,16 +79,17 @@
 
     </div>
 {% endfor %}
+    <button type="submit" class="button primary row-clear" name="submit" id="submit">{%trans "Save Changes"%}</button>
 
 {% else%}
 <p class="alert alert-info">{% trans "Empty"%}</p>
 {% endif%}
 
-   </form>
   </div>
   <div class="panel-footer">{%trans "In this section you can edit permission of"%}: <b>{%trans myContent%}</b></div>
  </div>
 {% endif%}
 {% endfor %}
 
+</form>
 {%endblock%}

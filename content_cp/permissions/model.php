@@ -30,8 +30,8 @@ class model extends \content_cp\home\model
 
 	function put_edit()
 	{
-		var_dump(4);exit();
 		$this->qryPermission('edit');
+		// var_dump(4);exit();
 	}
 
 
@@ -47,6 +47,7 @@ class model extends \content_cp\home\model
 		switch ($_type)
 		{
 			case 'add':
+			case 'edit':
 				$qry = $qry->and('option_value', $_value);
 				break;
 
@@ -117,6 +118,50 @@ class model extends \content_cp\home\model
 					$qryDel = $qryDel->set('option_status', 'disable')->update();
 				}
 				break;
+
+
+			case 'edit':
+				$editParam = $this->childparam('edit');
+
+				if($editParam)
+				{
+					$myMeta = $this->permContents(false);
+					// $myMeta['cp']['modules'] = $this->permModules('cp');
+
+					foreach ($myMeta as $key => $value)
+					{
+						// step1: get and fill content enable status
+						$postValue = utility::post('content-'.$key);
+						$myMeta[$key]['enable'] = false;
+						if($postValue === 'on')
+							$myMeta[$key]['enable'] = true;
+
+
+						$myMeta[$key]['modules'] = $this->permModules($key);
+						// foreach ($myMeta[$key]['modules'] as $key => $value)
+						// {
+
+						// }
+						// var_dump($key);
+						// var_dump($myMeta[$key]['modules']);
+					}
+
+
+
+
+					var_dump($myMeta);
+return;
+
+
+					$qryEdit = $this->qryCreator($_type, $editParam);
+					// var_dump($qryEdit);
+
+					$myMeta = array_filter($myMeta);
+					// var_dump($myMeta);
+					// $qryEdit = $qryEdit->set('option_meta', $myMeta)->update();
+				}
+				break;
+
 
 			default:
 				break;
@@ -207,30 +252,48 @@ class model extends \content_cp\home\model
 	 * @param  [type] $_list [description]
 	 * @return [type]        [description]
 	 */
-	public function permModulesCp($_list)
+	public function permModulesFill($_content, $_list)
 	{
-		$myChild = $this->child();
-		$qry = $this->sql()->table('options')
-				->where('user_id', 'IS', 'NULL')
-				->and('post_id', 'IS', "NULL")
-				->and('option_cat', 'permissions')
-				->and('option_value', $myChild)
-				->and('option_status',"enable");
-
-		$datarow = $qry->select()->assoc('option_meta');
-		if(substr($datarow, 0,1) == '{')
-		{
-			$datarow = json_decode($datarow, true);
-		}
-		$cpModulte  = $datarow['cp'];
 		$permResult = [];
+		$myChild    = $this->child();
+		if($myChild === 'edit')
+			$myChild = $this->childparam('edit');
 
-		foreach ($_list as $loc)
+		switch ($_content)
 		{
-			if(isset($cpModulte[$loc]) && is_array($cpModulte[$loc]))
-				$permResult[$loc] = $cpModulte[$loc];
-			else
-				$permResult[$loc] = null;
+			case 'cp':
+				$qry = $this->sql()->table('options')
+						->where('user_id',    'IS', 'NULL')
+						->and('post_id',      'IS', "NULL")
+						->and('option_cat',   'permissions')
+						->and('option_value',  $myChild)
+						->and('option_status', "enable");
+
+				$datarow = $qry->select()->assoc('option_meta');
+				if(substr($datarow, 0,1) == '{')
+				{
+					$datarow = json_decode($datarow, true);
+				}
+				// var_dump($datarow);
+				break;
+
+			default:
+				break;
+		}
+
+		// var_dump($_content);
+		if(isset($datarow[$_content]) && is_array($datarow[$_content]))
+		{
+
+			$myModules  = $datarow[$_content];
+
+			foreach ($_list as $loc)
+			{
+				if(isset($myModules[$loc]) && is_array($myModules[$loc]))
+					$permResult[$loc] = $myModules[$loc];
+				else
+					$permResult[$loc] = null;
+			}
 		}
 
 		return $permResult;
