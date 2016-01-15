@@ -106,8 +106,8 @@ class model extends \content_cp\home\model
 					->insert();
 
 				$qryAdd = $qryAdd;
-
 				break;
+
 
 			case 'delete':
 				$delParam = $this->childparam('delete');
@@ -121,43 +121,39 @@ class model extends \content_cp\home\model
 
 
 			case 'edit':
-				$editParam = $this->childparam('edit');
+				$editParam  = $this->childparam('edit');
+				$permResult = [];
+				$permCond   = ['select', 'add', 'edit', 'delete'];
 
 				if($editParam)
 				{
-					$myMeta = $this->permissions(false);
-
-					foreach ($myMeta as $key => $value)
+					foreach ($this->permContentsList() as $myContent)
 					{
 						// step1: get and fill content enable status
-						$postValue = utility::post('content-'.$key);
-						$myMeta[$key]['enable'] = false;
+						$postValue = utility::post('content-'.$myContent);
 						if($postValue === 'on')
-							$myMeta[$key]['enable'] = true;
+							$permResult[$myContent]['enable'] = true;
+						else
+							$permResult[$myContent]['enable'] = false;
 
-
-						// $myMeta[$key]['modules'] = $this->permModules($key);
-						// foreach ($myMeta[$key]['modules'] as $key => $value)
-						// {
-
-						// }
-						// var_dump($key);
-						// var_dump($myMeta[$key]['modules']);
+						// step2: fill content modules status
+						foreach ($this->permModulesList($myContent) as $myLoc)
+						{
+							foreach ($permCond as $cond)
+							{
+								$locName = $myContent. '-'. $myLoc.'-'. $cond;
+								$postValue = utility::post($locName);
+								if($postValue === 'on')
+									$permResult[$myContent]['modules'][$myLoc][$cond] = true;
+								// else
+									// $permResult[$myContent]['modules'][$myLoc][$cond] = null;
+							}
+						}
 					}
-
-
-
-
-					var_dump($myMeta);
-return;
-
+					$permResult = json_encode($permResult, JSON_FORCE_OBJECT);
 
 					$qryEdit = $this->qryCreator($_type, $editParam);
-					// var_dump($qryEdit);
-
-					$myMeta = array_filter($myMeta);
-					// var_dump($myMeta);
-					// $qryEdit = $qryEdit->set('option_meta', $myMeta)->update();
+					$qryEdit = $qryEdit->set('option_meta', $permResult)->update();
 				}
 				break;
 
@@ -180,7 +176,7 @@ return;
 					debug::true(T_("Delete Successfully"));
 					break;
 
-				case 'update':
+				case 'edit':
 					debug::true(T_("Update Successfully"));
 					break;
 
@@ -270,7 +266,7 @@ return;
 				->and('option_status', "enable");
 
 		$datarow = $qry->select()->assoc('option_meta');
-		if(substr($datarow, 0,1) == '{')
+		if(substr($datarow, 0, 1) == '{')
 		{
 			$datarow = json_decode($datarow, true);
 		}
@@ -287,7 +283,7 @@ return;
 			];
 
 			// 3.2 set enable status
-			if(isset($datarow[$myContent]['enable']))
+			if(isset($datarow[$myContent]['enable']) && $datarow[$myContent]['enable'])
 			{
 				$permResult[$myContent]['enable'] = true;
 			}

@@ -66,7 +66,7 @@ class controller extends \content_cp\home\controller
 	 * @param  [type] $_content content name
 	 * @return [type]           [description]
 	 */
-	public function permModulesList($_content = null)
+	public function permModulesList($_content)
 	{
 		$mylist = [];
 		switch ($_content)
