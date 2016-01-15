@@ -13,6 +13,7 @@ Already we don't have good documentaion! We hope can complete this before die!
 
 Changelog
 =========
+ * Version 1.0.1: fix showing permissions detail!
  * Version 1.0.0: seperate addons from saloos and initialize new rep!
 
 

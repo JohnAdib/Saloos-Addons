@@ -34,7 +34,7 @@
 
 {% for myContent, myPerm in permissions%}
 {% if myPerm is iterable and myPerm%}
- <div class="panel panel-default unselectable sensetive permission-detail closed {%if myPerm.enable != true%}display-none{%endif%}" id="content-{{myContent}}-detail">
+ <div class="panel panel-default unselectable sensetive permission-detail {%if myPerm.enable != true%}display-none{%endif%}" id="content-{{myContent}}-detail">
   <div class="panel-heading">{%trans "Edit permission of"%} {%trans myContent%}</div>
   <div class="panel-body">
 

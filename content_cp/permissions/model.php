@@ -125,8 +125,7 @@ class model extends \content_cp\home\model
 
 				if($editParam)
 				{
-					$myMeta = $this->permContents(false);
-					// $myMeta['cp']['modules'] = $this->permModules('cp');
+					$myMeta = $this->permissions(false);
 
 					foreach ($myMeta as $key => $value)
 					{
@@ -137,7 +136,7 @@ class model extends \content_cp\home\model
 							$myMeta[$key]['enable'] = true;
 
 
-						$myMeta[$key]['modules'] = $this->permModules($key);
+						// $myMeta[$key]['modules'] = $this->permModules($key);
 						// foreach ($myMeta[$key]['modules'] as $key => $value)
 						// {
 
@@ -252,47 +251,56 @@ return;
 	 * @param  [type] $_list [description]
 	 * @return [type]        [description]
 	 */
-	public function permModulesFill($_content, $_list)
+	public function permModuleFill()
 	{
-		$permResult = [];
+		$permResult       = [];
+		$permContentsList = $this->permContentsList();
+
+		// 1. get the name of permission
 		$myChild    = $this->child();
 		if($myChild === 'edit')
 			$myChild = $this->childparam('edit');
 
-		switch ($_content)
+		// 2. get perm data from table
+		$qry = $this->sql()->table('options')
+				->where('user_id',    'IS', 'NULL')
+				->and('post_id',      'IS', "NULL")
+				->and('option_cat',   'permissions')
+				->and('option_value',  $myChild)
+				->and('option_status', "enable");
+
+		$datarow = $qry->select()->assoc('option_meta');
+		if(substr($datarow, 0,1) == '{')
 		{
-			case 'cp':
-				$qry = $this->sql()->table('options')
-						->where('user_id',    'IS', 'NULL')
-						->and('post_id',      'IS', "NULL")
-						->and('option_cat',   'permissions')
-						->and('option_value',  $myChild)
-						->and('option_status', "enable");
-
-				$datarow = $qry->select()->assoc('option_meta');
-				if(substr($datarow, 0,1) == '{')
-				{
-					$datarow = json_decode($datarow, true);
-				}
-				// var_dump($datarow);
-				break;
-
-			default:
-				break;
+			$datarow = json_decode($datarow, true);
 		}
 
-		// var_dump($_content);
-		if(isset($datarow[$_content]) && is_array($datarow[$_content]))
+		// 3. fill the result
+		foreach ($permContentsList as $myContent)
 		{
+			// 3.1 fill null
+			$permResult[$myContent] =
+			[
+				'enable'  => null,
+				'modules' => null,
+				'roles'   => null
+			];
 
-			$myModules  = $datarow[$_content];
-
-			foreach ($_list as $loc)
+			// 3.2 set enable status
+			if(isset($datarow[$myContent]['enable']))
 			{
-				if(isset($myModules[$loc]) && is_array($myModules[$loc]))
-					$permResult[$loc] = $myModules[$loc];
+				$permResult[$myContent]['enable'] = true;
+			}
+
+			// 3.3 get modules list of specefic content and fill it with db values
+			$permModulesList = $this->permModulesList($myContent);
+			foreach ($permModulesList as $loc)
+			{
+				if(isset($datarow[$myContent]['modules'][$loc])
+					&& is_array($datarow[$myContent]['modules'][$loc]))
+					$permResult[$myContent]['modules'][$loc] = $datarow[$myContent]['modules'][$loc];
 				else
-					$permResult[$loc] = null;
+					$permResult[$myContent]['modules'][$loc] = null;
 			}
 		}
 

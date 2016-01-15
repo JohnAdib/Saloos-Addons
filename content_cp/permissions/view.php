@@ -10,32 +10,14 @@ class view extends \content_cp\home\view
 		$myChild                      = $this->child();
 		if($myChild)
 		{
-			$this->data->page['title'] = T_('Edit'). ' '.T_('permission') .' '. T_($myChild);
-			// $this->data->site['title'] = " -- " .$myChild;
+			$this->data->page['title'] =
+				T_('Edit'). ' '. T_('permission'). ' '. T_($myChild);
 
-
-			$this->data->permissions = $this->permContents(true);
-			// $this->data->permissions['SiteContent']   = ['enable' => false, 'modules' => null, 'roles' => null];
-			$this->data->permissions['cp']['modules'] = $this->permModules('cp');
-			// var_dump($this->data->permissions);
-
-
-			// foreach ($contents as $key => $myContent)
-			// {
-			// 	// foreach ($myContent as $module => )
-
-			// }
-
-			// var_dump($this->data->permissions);
-
-
-			// $this->data->permissions = $contents;
+			$this->data->permissions = $this->model()->permModuleFill();
 		}
 		else
 		{
-			// $this->data->type = \lib\utility::get('name');
 			$this->data->datarow = $this->model()->draw_permissions();
-			// var_dump($this->data->datarow);
 		}
 	}
 }

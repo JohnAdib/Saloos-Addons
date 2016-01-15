@@ -41,35 +41,24 @@ class controller extends \content_cp\home\controller
 	 * return the list of contents exist in current project and addons
 	 * @return [type] [description]
 	 */
-	public function permContents($_fill = false)
+	public function permContentsList()
 	{
 		// get all content exist in saloos and current project
-		$addons     = glob(addons."content_*", GLOB_ONLYDIR);
-		$project    = glob(root. "content_*", GLOB_ONLYDIR);
-		$contents   = array_merge($addons, $project);
-		$myContents = ['cp' => null, 'account' => null];
+		$addons   = glob(addons. "content_*", GLOB_ONLYDIR);
+		$project  = glob(root. "content_*", GLOB_ONLYDIR);
+		$contents = array_merge($addons, $project);
+		$myList   = ['cp', 'account'];
+		// $myList   = ['cp' => null, 'account' => null];
 
-		foreach ($contents as $key => $myContent)
+		foreach ($contents as $myContent)
 		{
 			$myContent = preg_replace("[\\\\]", "/", $myContent);
-			$myContent = substr( $myContent, ( strrpos( $myContent, "/" ) +1 ) );
-			$myContent = substr( $myContent, ( strrpos( $myContent, "_" ) +1 ) );
-			$myContents[$myContent] = null;
-			if($_fill)
-			{
-				$myContents[$myContent] = ['enable' => true, 'modules' => null, 'roles' => null];
-			}
+			$myContent = substr( $myContent, ( strrpos( $myContent, "/" ) + 1) );
+			$myContent = substr( $myContent, ( strrpos( $myContent, "_" ) + 1) );
+			array_push($myList, $myContent);
 		}
 
-		$myContents['SiteContent'] = null;
-		if($_fill)
-		{
-			$myContents['SiteContent'] = ['enable' => true, 'modules' => null, 'roles' => null];
-		}
-
-
-
-		return $myContents;
+		return $myList;
 	}
 
 	/**
@@ -77,9 +66,9 @@ class controller extends \content_cp\home\controller
 	 * @param  [type] $_content content name
 	 * @return [type]           [description]
 	 */
-	public function permModules($_content = null)
+	public function permModulesList($_content = null)
 	{
-		$mylist = null;
+		$mylist = [];
 		switch ($_content)
 		{
 			case 'cp':
@@ -113,19 +102,19 @@ class controller extends \content_cp\home\controller
 					switch ($feature)
 					{
 						case 'book':
-							$mylist = array_push($mylist, $feature);
-							$mylist = array_push($mylist, 'bookcategories');
+							array_push($mylist, $feature);
+							array_push($mylist, 'bookcategories');
 							break;
 
 						case 'socialnetworks':
 						case 'visitors':
 						default:
-							$mylist = array_push($mylist, $feature);
+							array_push($mylist, $feature);
 							break;
 					}
 				}
 				// var_dump($mylist);
-				$mylist = $this->model()->permModulesFill($_content, $mylist);
+				// $mylist = $this->model()->permModuleFill($_content, $mylist);
 				// var_dump($mylist);
 
 				break;
@@ -139,19 +128,20 @@ class controller extends \content_cp\home\controller
 				break;
 		}
 
-		// $mylist2 = $this->model()->permModulesFill($_content, $mylist);
-		return $mylist;
 
 		// $mylist = array_flip($mylist);
-		$default_values = [
-							'select' => true,
-							'add'    => false,
-							'edit'   => true,
-							'delete' => true,
-						];
-
-		$mylist = array_fill_keys($mylist, $default_values);
+		// var_dump($mylist);
 		return $mylist;
+
+		// $default_values = [
+		// 					'select' => true,
+		// 					'add'    => false,
+		// 					'edit'   => true,
+		// 					'delete' => true,
+		// 				];
+
+		// $mylist = array_fill_keys($mylist, $default_values);
+		// return $mylist;
 	}
 }
 ?>
