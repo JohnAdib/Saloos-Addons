@@ -299,9 +299,9 @@ class controller extends \mvc\controller
 					'tags'        => null,
 					'attachments' => null,
 					'users'       => null,
-					'tools'       => null,
+					'tools'       => ['select'],
 					'permissions' => null,
-					'options'     => null
+					'options'     => ['select', 'edit']
 				];
 
 		// get features value from view and fix it later

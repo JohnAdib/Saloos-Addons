@@ -71,16 +71,47 @@ class controller extends \content_cp\home\controller
 	 */
 	public function permModulesList($_content)
 	{
-		$mylist      = [];
+		$myList      = [];
 		$contentName = '\content_'. $_content. '\home\controller';
 		if(method_exists($contentName, 'permModules'))
 		{
 			// if module exist call it
 			$contentInstance = new $contentName;
-			$mylist          = $contentInstance->permModules();
-		}
+			$myList          = $contentInstance->permModules();
+			if(!is_array($myList))
+			{
+				$myList = [];
+			}
 
-		return $mylist;
+			// recheck return value from permission modules list func
+			foreach ($myList as $permLoc => $permValue)
+			{
+				if(is_array($permValue))
+				{
+					$permCond = ['select', 'add', 'edit', 'delete'];
+					foreach ($permValue as $key => $value)
+					{
+						// remove meta
+						unset($myList[$permLoc][$key]);
+						if(in_array($value, $permCond))
+						{
+							$myList[$permLoc][$value] = 'hide';
+						}
+					}
+
+					// $myList[$permLoc] = array_flip($permValue);
+				}
+				else
+				{
+					$myList[$permLoc] = null;
+				}
+			}
+		}
+		var_dump($myList);
+		// $myList = array_flip($myList);
+
+
+		return $myList;
 	}
 }
 ?>

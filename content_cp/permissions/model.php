@@ -292,7 +292,7 @@ class model extends \content_cp\home\model
 					&& is_array($datarow[$myContent]['modules'][$myLoc]))
 					$permResult[$myContent]['modules'][$myLoc] = $datarow[$myContent]['modules'][$myLoc];
 				else
-					$permResult[$myContent]['modules'][$myLoc] = null;
+					$permResult[$myContent]['modules'][$myLoc] = $value;
 			}
 		}
 
