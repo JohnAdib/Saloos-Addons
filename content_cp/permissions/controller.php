@@ -47,8 +47,7 @@ class controller extends \content_cp\home\controller
 		$addons   = glob(addons. "content_*", GLOB_ONLYDIR);
 		$project  = glob(root. "content_*", GLOB_ONLYDIR);
 		$contents = array_merge($addons, $project);
-		$myList   = ['cp', 'account'];
-		// $myList   = ['cp' => null, 'account' => null];
+		$myList   = [];
 
 		foreach ($contents as $myContent)
 		{
@@ -57,91 +56,31 @@ class controller extends \content_cp\home\controller
 			$myContent = substr( $myContent, ( strrpos( $myContent, "_" ) + 1) );
 			array_push($myList, $myContent);
 		}
+		$myList = array_flip($myList);
+		unset($myList['account']);
+		$myList = array_flip($myList);
 
 		return $myList;
 	}
 
 	/**
 	 * return the modules of each part of system
-	 * @param  [type] $_content content name
-	 * @return [type]           [description]
+	 * first check if function declare then return the permissions module of this content
+	 * @param  [string] $_content content name
+	 * @return [array]  return the permission modules list
 	 */
 	public function permModulesList($_content)
 	{
-		$mylist = [];
-		switch ($_content)
+		$mylist      = [];
+		$contentName = '\content_'. $_content. '\home\controller';
+		if(method_exists($contentName, 'permModules'))
 		{
-			case 'cp':
-				$mylist	= [
-							// 'home',
-							'posts',
-							'categories',
-							'pages',
-							'tags',
-							'attachments',
-							// 'filecategories',
-							'users',
-							'tools',
-							'permissions',
-							'options',
-							// 'profile',
-						];
-
-				// get features value from view and fix it later
-				$features = [];
-				if(isset($this->data->feature) && is_array($this->data->feature))
-					$features = $this->data->feature;
-
-				foreach ($features as $feature => $enable)
-				{
-					// if option is not true continue to next
-					if(!$enable)
-						continue;
-
-					// else switch on enabled feature
-					switch ($feature)
-					{
-						case 'book':
-							array_push($mylist, $feature);
-							array_push($mylist, 'bookcategories');
-							break;
-
-						case 'socialnetworks':
-						case 'visitors':
-						default:
-							array_push($mylist, $feature);
-							break;
-					}
-				}
-				// var_dump($mylist);
-				// $mylist = $this->model()->permModuleFill($_content, $mylist);
-				// var_dump($mylist);
-
-				break;
-
-			case 'account':
-			case 'files':
-				break;
-
-
-			default:
-				break;
+			// if module exist call it
+			$contentInstance = new $contentName;
+			$mylist          = $contentInstance->permModules();
 		}
 
-
-		// $mylist = array_flip($mylist);
-		// var_dump($mylist);
 		return $mylist;
-
-		// $default_values = [
-		// 					'select' => true,
-		// 					'add'    => false,
-		// 					'edit'   => true,
-		// 					'delete' => true,
-		// 				];
-
-		// $mylist = array_fill_keys($mylist, $default_values);
-		// return $mylist;
 	}
 }
 ?>

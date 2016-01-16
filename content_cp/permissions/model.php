@@ -9,8 +9,6 @@ class model extends \content_cp\home\model
 	function get_delete()
 	{
 		$this->qryPermission('delete');
-		// var_dump(3);exit();
-		// $this->delete( $this->sql()->table('posts')->where('id', $this->childparam('delete')));
 	}
 
 	function delete_delete()
@@ -31,7 +29,6 @@ class model extends \content_cp\home\model
 	function put_edit()
 	{
 		$this->qryPermission('edit');
-		// var_dump(4);exit();
 	}
 
 
@@ -137,7 +134,7 @@ class model extends \content_cp\home\model
 							$permResult[$myContent]['enable'] = false;
 
 						// step2: fill content modules status
-						foreach ($this->permModulesList($myContent) as $myLoc)
+						foreach ($this->permModulesList($myContent) as $myLoc =>$value)
 						{
 							foreach ($permCond as $cond)
 							{
@@ -237,7 +234,6 @@ class model extends \content_cp\home\model
 		}
 		else
 		{
-			// var_dump($qry_result[$pType]);
 			return $qry_result[$pType];
 		}
 	}
@@ -290,13 +286,13 @@ class model extends \content_cp\home\model
 
 			// 3.3 get modules list of specefic content and fill it with db values
 			$permModulesList = $this->permModulesList($myContent);
-			foreach ($permModulesList as $loc)
+			foreach ($permModulesList as $myLoc => $value)
 			{
-				if(isset($datarow[$myContent]['modules'][$loc])
-					&& is_array($datarow[$myContent]['modules'][$loc]))
-					$permResult[$myContent]['modules'][$loc] = $datarow[$myContent]['modules'][$loc];
+				if(isset($datarow[$myContent]['modules'][$myLoc])
+					&& is_array($datarow[$myContent]['modules'][$myLoc]))
+					$permResult[$myContent]['modules'][$myLoc] = $datarow[$myContent]['modules'][$myLoc];
 				else
-					$permResult[$myContent]['modules'][$loc] = null;
+					$permResult[$myContent]['modules'][$myLoc] = null;
 			}
 		}
 

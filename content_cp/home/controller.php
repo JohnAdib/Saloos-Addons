@@ -285,5 +285,56 @@ class controller extends \mvc\controller
 			return $result;
 	}
 
+
+	/**
+	 * define perm modules for permission level
+	 * @return [array] return the permissions in this content
+	 */
+	function permModules()
+	{
+		$mylist	= [
+					'posts'       => null,
+					'categories'  => null,
+					'pages'       => null,
+					'tags'        => null,
+					'attachments' => null,
+					'users'       => null,
+					'tools'       => null,
+					'permissions' => null,
+					'options'     => null
+				];
+
+		// get features value from view and fix it later
+		$features = [];
+		if(isset($this->data->feature) && is_array($this->data->feature))
+			$features = $this->data->feature;
+
+		foreach ($features as $feature => $enable)
+		{
+			// if option is not true continue to next
+			if(!$enable)
+				continue;
+
+			// else switch on enabled feature
+			switch ($feature)
+			{
+				case 'book':
+					array_push($mylist, $feature);
+					array_push($mylist, 'bookcategories');
+					break;
+
+				case 'socialnetworks':
+				case 'visitors':
+				default:
+					array_push($mylist, $feature);
+					break;
+			}
+		}
+		// var_dump($mylist);
+		// $mylist = $this->model()->permModuleFill($_content, $mylist);
+		// var_dump($mylist);
+
+		return $mylist;
+	}
 }
 ?>
