@@ -88,18 +88,19 @@ class controller extends \content_cp\home\controller
 			{
 				if(is_array($permValue))
 				{
-					$permCond = ['select', 'add', 'edit', 'delete'];
-					foreach ($permValue as $key => $value)
+					$permCond = ['select', 'add', 'edit', 'delete', 'user'];
+					$myList[$permLoc] = null;
+					foreach ($permCond as $value)
 					{
-						// remove meta
-						unset($myList[$permLoc][$key]);
-						if(in_array($value, $permCond))
+						if(in_array($value, $permValue))
+						{
+							// $myList[$permLoc][$value] = 'show';
+						}
+						else
 						{
 							$myList[$permLoc][$value] = 'hide';
 						}
 					}
-
-					// $myList[$permLoc] = array_flip($permValue);
 				}
 				else
 				{
@@ -107,7 +108,7 @@ class controller extends \content_cp\home\controller
 				}
 			}
 		}
-		var_dump($myList);
+		// var_dump($myList);
 		// $myList = array_flip($myList);
 
 
