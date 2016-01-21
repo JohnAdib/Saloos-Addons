@@ -39,34 +39,34 @@ function transtext()
 
 	//-----------------------------------saloos-addons\content_cp\home\layout-xhr.html
 	echo T_("Add New Record");                                                        // Line 83 Seperate
-	echo T_("View your current location and navigate to parent of it");               // Line 68
+	echo T_("View your current location and navigate to parent of it");               // Line 82
 
 	//---------------------------------------saloos-addons\content_cp\home\layout.html
 	echo T_("Use this menu for navigating to all part of control panel");             // Line 8
 	echo T_("Dashboard");                                                             // Line 89 Seperate
-	echo T_("Books");                                                                 // Line 14
-	echo T_("Visitors");                                                              // Line 18
-	echo T_("Social networks");                                                       // Line 21
+	echo T_("Books");                                                                 // Line 20
+	echo T_("Visitors");                                                              // Line 26
+	echo T_("Social networks");                                                       // Line 29
 	echo T_("Tools");                                                                 // Line 153 Seperate
-	echo T_("Permissions");                                                           // Line 25
+	echo T_("Permissions");                                                           // Line 36
 	echo T_("Options");                                                               // Line 80 Seperate
 	echo T_("Homepage");                                                              // Line 72 Seperate
-	echo T_("Next →");                                                              // Line 38
-	echo T_("← Back");                                                              // Line 38
-	echo T_("Skip");                                                                  // Line 38
-	echo T_("Done");                                                                  // Line 38
-	echo T_("Help");                                                                  // Line 40
-	echo T_("You can work with control panel in your language");                      // Line 42
-	echo T_("Go to your profile, change password or logout from conrtol panel");      // Line 54
+	echo T_("Next →");                                                              // Line 52
+	echo T_("← Back");                                                              // Line 52
+	echo T_("Skip");                                                                  // Line 52
+	echo T_("Done");                                                                  // Line 52
+	echo T_("Help");                                                                  // Line 54
+	echo T_("You can work with control panel in your language");                      // Line 56
+	echo T_("Go to your profile, change password or logout from conrtol panel");      // Line 68
 	echo T_("My Profile");                                                            // Line 96 Seperate
 	echo T_("Change Password");                                                       // Line 228 Seperate
 	echo T_("Lock Screen");                                                           // Line 98 Seperate
 	echo T_("Logout");                                                                // Line 99 Seperate
-	echo T_("We glad to working for you and hope you enjoy using our system");        // Line 84
-	echo T_("Some right reserved");                                                   // Line 86
-	echo T_("Powered by");                                                            // Line 86
+	echo T_("We glad to working for you and hope you enjoy using our system");        // Line 98
+	echo T_("Some right reserved");                                                   // Line 100
+	echo T_("Powered by");                                                            // Line 100
 	echo T_("Saloos");                                                                // Line 7 Seperate
-	echo T_("Last update on");                                                        // Line 88
+	echo T_("Last update on");                                                        // Line 102
 	echo T_("Version");                                                               // Line 102 Seperate
 
 	//-------------------------------saloos-addons\content_cp\permissions\display.html
@@ -88,8 +88,8 @@ function transtext()
 	echo T_("Save Changes");                                                          // Line 49
 	echo T_("You are change this type of permission");                                // Line 30
 	echo T_("Edit permission of");                                                    // Line 38
-	echo T_("Allow or disallow user to access all part of service with full permission!");// Line 44
-	echo T_("All");                                                                   // Line 44
+	echo T_("Allow or disallow user to access all part of service with full permission!");// Line 43
+	echo T_("All");                                                                   // Line 43
 	echo T_("Allow or disallow user to view all part of service");                    // Line 45
 	echo T_("View");                                                                  // Line 139 Seperate
 	echo T_("Allow or disallow user to use and insert in all part of service");       // Line 46
@@ -99,8 +99,8 @@ function transtext()
 	echo T_("Allow or disallow user to delete in all part of service");               // Line 48
 	echo T_("Allow or disallow user to access another user data");                    // Line 50
 	echo T_("Admin");                                                                 // Line 147 Seperate
-	echo T_("Empty");                                                                 // Line 108
-	echo T_("In this section you can edit permission of");                            // Line 112
+	echo T_("Empty");                                                                 // Line 104
+	echo T_("In this section you can edit permission of");                            // Line 108
 
 	//---------------------------saloos-addons\content_cp\templates\child_display.html
 
