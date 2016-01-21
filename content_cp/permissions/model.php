@@ -290,7 +290,14 @@ class model extends \content_cp\home\model
 			{
 				if(isset($datarow[$myContent]['modules'][$myLoc])
 					&& is_array($datarow[$myContent]['modules'][$myLoc]))
+				{
 					$permResult[$myContent]['modules'][$myLoc] = $datarow[$myContent]['modules'][$myLoc];
+					// if user set specefic value for this location add it to db values
+					if(is_array($value))
+					{
+						$permResult[$myContent]['modules'][$myLoc] += $value;
+					}
+				}
 				else
 					$permResult[$myContent]['modules'][$myLoc] = $value;
 			}
