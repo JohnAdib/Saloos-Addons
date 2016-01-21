@@ -40,8 +40,8 @@
 
 {% if myPerm.modules is iterable and myPerm.modules%}
    <div class="row auto head">
-    <div class="span2"></div>
-    <div class="span2 hint--top allAll" data-hint='{%trans "Allow or disallow user to access all part of service with full permission!"%}'>{%trans "All"%}</div>
+    <div class="span2 hint--right allAll" data-hint='{%trans "Allow or disallow user to access all part of service with full permission!"%}'>{%trans "All"%}</div>
+    <div class="span1"></div>
     <div class="span1 hint--top allView" data-hint='{%trans "Allow or disallow user to view all part of service"%}'>{%trans "View"%}</div>
     <div class="span1 hint--top allAdd" data-hint='{%trans "Allow or disallow user to use and insert in all part of service"%}'>{%trans "Add"%}</div>
     <div class="span1 hint--top allEdit" data-hint='{%trans "Allow or disallow user to edit all part of service"%}'>{%trans "Edit"%}</div>
@@ -52,12 +52,8 @@
 {% for permLoc, permAccess in myPerm.modules%}
 {%set field = myContent ~ '-' ~ permLoc%}
    <div class="row auto">
-    <div class="span2"><label for={{field}}-all>{%trans permLoc%}</label></div>
-
-    <div class="span2">
-     <input type="checkbox" name="{{field}}-all" id="{{field}}-all" class="checkbox" {%if permAccess.view and permAccess.add and permAccess.edit and permAccess.delete%}checked{%endif%}>
-     <label for="{{field}}-all"><span></span></label>
-    </div>
+    <div class="span2 {{field}}-all">{%trans permLoc%}</div>
+    <div class="span1"></div>
 
     <div class="span1">
 {%if permAccess.view is same as('hide')%}
