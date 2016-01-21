@@ -151,6 +151,8 @@ class model extends \content_cp\home\model
 
 					$qryEdit = $this->qryCreator($_type, $editParam);
 					$qryEdit = $qryEdit->set('option_meta', $permResult)->update();
+				
+					$this->setPermissionSession();
 				}
 				break;
 
