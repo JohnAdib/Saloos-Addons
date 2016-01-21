@@ -294,14 +294,14 @@ class controller extends \mvc\controller
 	{
 		$mylist	= [
 					'posts'       => null,
-					'categories'  => null,
+					'categories'  => ['admin'],
 					'pages'       => null,
-					'tags'        => null,
-					'attachments' => null,
+					'tags'        => ['admin'],
+					'attachments' => ['admin'],
 					'users'       => null,
-					'tools'       => ['select'],
-					'permissions' => null,
-					'options'     => ['select', 'edit']
+					'tools'       => ['admin'],
+					'permissions' => ['admin'],
+					'options'     => ['admin', 'add', 'delete']
 				];
 
 		// get features value from view and fix it later

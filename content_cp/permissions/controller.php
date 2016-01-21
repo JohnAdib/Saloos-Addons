@@ -88,17 +88,18 @@ class controller extends \content_cp\home\controller
 			{
 				if(is_array($permValue))
 				{
-					$permCond = ['select', 'add', 'edit', 'delete', 'user'];
+					$permCond = ['view', 'add', 'edit', 'delete', 'admin'];
 					$myList[$permLoc] = null;
 					foreach ($permCond as $value)
 					{
 						if(in_array($value, $permValue))
 						{
 							// $myList[$permLoc][$value] = 'show';
+							$myList[$permLoc][$value] = 'hide';
 						}
 						else
 						{
-							$myList[$permLoc][$value] = 'hide';
+							// $myList[$permLoc][$value] = 'hide';
 						}
 					}
 				}

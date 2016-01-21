@@ -39,57 +39,68 @@
   <div class="panel-body">
 
 {% if myPerm.modules is iterable and myPerm.modules%}
-    <div class="row auto head">
-     <div class="span2"></div>
-     <div class="span2 hint--top allAll" data-hint='{%trans "Allow or disallow user to access all part of service with full permission!"%}'>{%trans "All"%}</div>
-     <div class="span1 hint--top allSelect" data-hint='{%trans "Allow or disallow user to view all part of service"%}'>{%trans "Select"%}</div>
-     <div class="span1 hint--top allAdd" data-hint='{%trans "Allow or disallow user to insert in all part of service"%}'>{%trans "Add"%}</div>
-     <div class="span1 hint--top allEdit" data-hint='{%trans "Allow or disallow user to edit all part of service"%}'>{%trans "Edit"%}</div>
-     <div class="span1 hint--top allDelete" data-hint='{%trans "Allow or disallow user to delete in all part of service"%}'>{%trans "Delete"%}</div>
-    </div>
+   <div class="row auto head">
+    <div class="span2"></div>
+    <div class="span2 hint--top allAll" data-hint='{%trans "Allow or disallow user to access all part of service with full permission!"%}'>{%trans "All"%}</div>
+    <div class="span1 hint--top allView" data-hint='{%trans "Allow or disallow user to view all part of service"%}'>{%trans "View"%}</div>
+    <div class="span1 hint--top allAdd" data-hint='{%trans "Allow or disallow user to use and insert in all part of service"%}'>{%trans "Add"%}</div>
+    <div class="span1 hint--top allEdit" data-hint='{%trans "Allow or disallow user to edit all part of service"%}'>{%trans "Edit"%}</div>
+    <div class="span1 hint--top allDelete" data-hint='{%trans "Allow or disallow user to delete in all part of service"%}'>{%trans "Delete"%}</div>
+    <div class="span1"></div>
+    <div class="span1 hint--left allAdmin" data-hint='{%trans "Allow or disallow user to access another user data"%}'>{%trans "Admin"%}</div>
+   </div>
 {% for permLoc, permAccess in myPerm.modules%}
 {%set field = myContent ~ '-' ~ permLoc%}
-    <div class="row auto">
-     <div class="span2"><label for={{field}}-all>{%trans permLoc%}</label></div>
+   <div class="row auto">
+    <div class="span2"><label for={{field}}-all>{%trans permLoc%}</label></div>
 
-     <div class="span2">
-      <input type="checkbox" name="{{field}}-all" id="{{field}}-all" class="checkbox" {%if permAccess.select and permAccess.add and permAccess.edit and permAccess.delete%}checked{%endif%}>
-      <label for="{{field}}-all"><span></span></label>
-     </div>
-
-     <div class="span1">
-     {%if permAccess.select is same as('hide')%}
-     {%else%}
-      <input type="checkbox" name="{{field}}-select" id="{{field}}-select" class="checkbox" {%if permAccess.select == 'on'%}checked{%endif%}>
-      <label for="{{field}}-select"><span></span></label>
-     {%endif%}
-     </div>
-
-     <div class="span1">
-     {%if permAccess.add is same as('hide')%}
-     {%else%}
-      <input type="checkbox" name="{{field}}-add" id="{{field}}-add" class="checkbox" {%if permAccess.add == 'on'%}checked{%endif%}>
-      <label for="{{field}}-add"><span></span></label>
-     {%endif%}
-     </div>
-
-     <div class="span1">
-     {%if permAccess.edit is same as('hide')%}
-     {%else%}
-      <input type="checkbox" name="{{field}}-edit" id="{{field}}-edit" class="checkbox" {%if permAccess.edit == 'on'%}checked{%endif%}>
-      <label for="{{field}}-edit"><span></span></label>
-     {%endif%}
-     </div>
-
-     <div class="span1">
-     {%if permAccess.delete is same as('hide')%}
-     {%else%}
-      <input type="checkbox" name="{{field}}-delete" id="{{field}}-delete" class="checkbox" {%if permAccess.delete == 'on'%}checked{%endif%}>
-      <label for="{{field}}-delete"><span></span></label>
-     {%endif%}
-     </div>
-
+    <div class="span2">
+     <input type="checkbox" name="{{field}}-all" id="{{field}}-all" class="checkbox" {%if permAccess.view and permAccess.add and permAccess.edit and permAccess.delete%}checked{%endif%}>
+     <label for="{{field}}-all"><span></span></label>
     </div>
+
+    <div class="span1">
+{%if permAccess.view is same as('hide')%}
+{%else%}
+     <input type="checkbox" name="{{field}}-view" id="{{field}}-view" class="checkbox" {%if permAccess.view == 'on'%}checked{%endif%}>
+     <label for="{{field}}-view"><span></span></label>
+{%endif%}
+    </div>
+
+    <div class="span1">
+{%if permAccess.add is same as('hide')%}
+{%else%}
+     <input type="checkbox" name="{{field}}-add" id="{{field}}-add" class="checkbox" {%if permAccess.add == 'on'%}checked{%endif%}>
+     <label for="{{field}}-add"><span></span></label>
+{%endif%}
+    </div>
+
+    <div class="span1">
+{%if permAccess.edit is same as('hide')%}
+{%else%}
+     <input type="checkbox" name="{{field}}-edit" id="{{field}}-edit" class="checkbox" {%if permAccess.edit == 'on'%}checked{%endif%}>
+     <label for="{{field}}-edit"><span></span></label>
+{%endif%}
+    </div>
+
+    <div class="span1">
+{%if permAccess.delete is same as('hide')%}
+{%else%}
+     <input type="checkbox" name="{{field}}-delete" id="{{field}}-delete" class="checkbox" {%if permAccess.delete == 'on'%}checked{%endif%}>
+     <label for="{{field}}-delete"><span></span></label>
+{%endif%}
+    </div>
+
+    <div class="span1"></div>
+    <div class="span1 adminCheck">
+{%if permAccess.admin is same as('hide')%}
+{%else%}
+     <input type="checkbox" name="{{field}}-admin" id="{{field}}-admin" class="checkbox" {%if permAccess.admin == 'on'%}checked{%endif%}>
+     <label for="{{field}}-admin"><span></span></label>
+{%endif%}
+    </div>
+
+   </div>
 {% endfor %}
     <button type="submit" class="button primary row-clear" name="submit" id="submit">{%trans "Save Changes"%}</button>
 

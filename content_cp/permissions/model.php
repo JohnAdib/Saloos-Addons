@@ -120,7 +120,7 @@ class model extends \content_cp\home\model
 			case 'edit':
 				$editParam  = $this->childparam('edit');
 				$permResult = [];
-				$permCond   = ['select', 'add', 'edit', 'delete'];
+				$permCond   = ['view', 'add', 'edit', 'delete', 'admin'];
 
 				if($editParam)
 				{
