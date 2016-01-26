@@ -28,15 +28,15 @@
 {%if feature.socialnetworks and perm.socialNetworks.view%}
    <a href="{{url.base}}socialnetwork"><i class="fa fa-lg fa-share-alt"></i> <span>{%trans "Social networks"%}</span></a>
 {%endif%}
-{%if url.tld =='dev'%}
-{%if perm.tools.view%}
-   <a href="{{url.base}}tools"><i class="fa fa-lg fa-wrench"></i> <span>{%trans "Tools"%}</span></a>
-{%endif%}
 {%if perm.permissions.view%}
    <a href="{{url.base}}permissions"><i class="fa fa-lg fa-lock"></i> <span>{%trans "Permissions"%}</span></a>
 {%endif%}
 {%if perm.options.view%}
    <a href="{{url.base}}options"><i class="fa fa-lg fa-cog"></i> <span>{%trans "Options"%}</span></a>
+{%endif%}
+{%if url.tld =='dev'%}
+{%if perm.tools.view%}
+   <a href="{{url.base}}tools"><i class="fa fa-lg fa-wrench"></i> <span>{%trans "Tools"%}</span></a>
 {%endif%}
 {%endif%}
   </nav>
