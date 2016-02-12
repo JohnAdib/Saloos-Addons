@@ -16,7 +16,7 @@
 
 
  <div class="row auto">
-  <div class="span8" data-step='6' data-intro='{%trans "Summarized data of site"%}' data-position="top">
+  <div class="{%if visitors%}span8{%else%}span12{%endif%}" data-step='6' data-intro='{%trans "Summarized data of site"%}' data-position="top">
 
    <div class="row auto">
     <div class="span4">
@@ -105,9 +105,9 @@
 {%block foot_js%}
 {%if visitors%}
  <script type="text/javascript">
-  route('*', function() 
+  route('*', function()
   {
-    $(function () { 
+    $(function () {
       $('#chart').highcharts({
         chart: { type: '{{chart_type}}' {%if global.lang=='fa_IR'%}, style: {fontFamily: 'IRANSans'}{%endif%} },
         title: { text: '' },
@@ -120,7 +120,7 @@
           headerFormat: '<table><thead><tr><td colspan="3">{%if global.lang=="fa_IR"%}{point.key} {%else%} {{point.key | date("l j F Y")}} {%endif%}</td></tr></thead>',
           pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' + '<td><b>{point.y:0.0f} {%trans "Visit"%}</b></td></tr>',
           footerFormat: '</table>',
-          
+
 
         },
         legend: {
