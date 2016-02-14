@@ -14,14 +14,14 @@
  <meta name     ="twitter:description"     content="{{page.desc}}"/>
  <meta name     ="twitter:image"           content="{{url.static}}images/logo.png"/>
 {%endblock%}
- <meta property ="og:url"                  content="{{url.root}}"/>
  <meta property ="og:image"                content="{{url.static}}images/logo.png"/>
+ <meta property ="og:url"                  content="{{url.root}}"/>
  <meta property ='og:locale'               content='{{global.lang}}'/>
  <meta name     ="msapplication-TileColor" content="#000000"/>
  <meta name     ="application-name"        content="{{global.title}}"/>
  <meta name     ="viewport"                content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0 maximum-scale=1.0, user-scalable=no, minimal-ui"/>
  <!-- [if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><![endif] -->
- <!-- [if lte IE 8]><script>document.location = 'http://deadbrowser.com/?lang={{global.lang}}';</script><![endif] -->
+ <!-- [if lte IE 8]><script>document.location = 'http://deadbrowser.com/{{site.currentlang}}';</script><![endif] -->
  <link rel="author"           href="{{url.static}}humans.txt"/>
  <link rel="shortcut icon"    href="{{url.static}}images/favicon.png"/>
  <link rel="apple-touch-icon" href="{{url.static}}images/favicon.png">
@@ -35,10 +35,10 @@
  <link rel="stylesheet"       href="{{url.static}}css/style.css"/>{{include.newline}}{%endif%}
 {%if include.cp      %}
  <link rel="stylesheet"       href="{{url.myStatic}}css/style-cp.css"/>{{include.newline}}{%endif%}
- <link rel="canonical"        href="{{url.MainProtocol}}://{{url.SubDomain}}{{url.MainSite}}{{url.path}}"/>
+ <link rel="canonical"        href="{{url.base}}{{url.path}}"/>
  <link rel="alternate"        href="{{url.root}}feed/" title="{{site.title}} RSS feed" type="application/rss+xml" />
 {%for key, lang in site.langlist if site.langlist|length >1 and site.currentlang != key|slice(0, 2)%}
- <link rel="alternate"        href="{{url.protocol}}://{{key|slice(0, 2)}}.{{url.raw}}" hreflang="{{key|slice(0, 2)}}"/>
+ <link rel="alternate"        href="{{url.root}}{{key|slice(0, 2)}}" hreflang="{{key|slice(0, 2)}}"/>
 {%endfor%}
 {%block head_css         %}{%endblock%}
 {%block head_js          %}{%endblock%}
