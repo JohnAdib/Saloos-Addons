@@ -5,7 +5,7 @@ class controller extends \content_cp\home\controller
 {
 	function _route()
 	{
-		if(!$this->login())
+		if(!$this->login() && Tld !== 'dev')
 		{
 			$mydomain = AccountService? AccountService.MainTld: null;
 			\lib\debug::warn(T_("first of all, you must login to system!"));
@@ -30,6 +30,7 @@ class controller extends \content_cp\home\controller
 
 			case 'twigtrans':
 				\lib\utility\twigTrans::extract(\lib\utility::get('path'));
+				exit();
 				break;
 
 			case 'server':
