@@ -9,6 +9,10 @@ class model extends \content_cp\home\model
 	// ---------------------------------------------------- handle all type of request used for all common modules
 	function get_delete()
 	{
+		// Check permission and if user can do this operation
+		// allow to do it, else show related message in notify center
+		$this->access('cp', 'posts', 'delete', 'block');
+
 		$this->delete( $this->sql()->table('posts')->where('id', $this->childparam('delete')));
 	}
 
@@ -20,11 +24,19 @@ class model extends \content_cp\home\model
 
 	function post_delete()
 	{
+		// Check permission and if user can do this operation
+		// allow to do it, else show related message in notify center
+		$this->access('cp', 'posts', 'delete', 'notify');
+
 		$this->delete( $this->sql()->table('posts')->where('id', $this->childparam('delete')));
 	}
 
 	function post_add()
 	{
+		// Check permission and if user can do this operation
+		// allow to do it, else show related message in notify center
+		$this->access('cp', 'posts', 'add', 'notify');
+
 		if($this->module() === 'attachments')
 			$this->sp_attachment_add();
 		else
@@ -33,6 +45,10 @@ class model extends \content_cp\home\model
 
 	function put_edit()
 	{
+		// Check permission and if user can do this operation
+		// allow to do it, else show related message in notify center
+		$this->access('cp', 'posts', 'edit', 'notify');
+
 		$this->cp_create_query();
 	}
 

@@ -12,7 +12,12 @@ class controller extends \mvc\controller
 			$this->redirector(null, false)->set_domain($mydomain)->set_url('login')->redirect();
 			exit();
 		}
+		// Check permission and if user can do this operation
+		// allow to do it, else show related message in notify center
+		$this->access('cp', null, null, 'block');
 	}
+
+
 	function config()
 	{
 
@@ -43,6 +48,10 @@ class controller extends \mvc\controller
 				break;
 
 			case 'profile':
+				// Check permission and if user can do this operation
+				// allow to do it, else show related message in notify center
+				$this->access('cp', 'profile', 'edit', 'notify');
+
 				//allow put on profile
 				$this->display_name	= 'content_cp/templates/module_profile.html';
 				$this->get(null, 'datatable')->ALL('/^[^\/]*$/');
