@@ -26,6 +26,7 @@ class controller extends \content_cp\home\controller
 		{
 			case 'dbtables':
 				\lib\utility\dbTables::create();
+				exit();
 				break;
 
 			case 'twigtrans':

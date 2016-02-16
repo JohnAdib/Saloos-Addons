@@ -119,39 +119,15 @@ class model extends \content_cp\home\model
 
 			case 'edit':
 				$editParam  = $this->childparam('edit');
-				$permResult = [];
-				$permCond   = ['view', 'add', 'edit', 'delete', 'admin'];
 
 				if($editParam)
 				{
-					foreach ($this->permContentsList() as $myContent)
-					{
-						// step1: get and fill content enable status
-						$postValue = utility::post('content-'.$myContent);
-						if($postValue === 'on')
-							$permResult[$myContent]['enable'] = true;
-						else
-							$permResult[$myContent]['enable'] = false;
-
-						// step2: fill content modules status
-						foreach ($this->permModulesList($myContent) as $myLoc =>$value)
-						{
-							foreach ($permCond as $cond)
-							{
-								$locName = $myContent. '-'. $myLoc.'-'. $cond;
-								$postValue = utility::post($locName);
-								if($postValue === 'on')
-									$permResult[$myContent]['modules'][$myLoc][$cond] = true;
-								// else
-									// $permResult[$myContent]['modules'][$myLoc][$cond] = null;
-							}
-						}
-					}
+					$permResult = $this->permList(true);
 					$permResult = json_encode($permResult, JSON_FORCE_OBJECT);
 
 					$qryEdit = $this->qryCreator($_type, $editParam);
 					$qryEdit = $qryEdit->set('option_meta', $permResult)->update();
-				
+
 					$this->setPermissionSession();
 				}
 				break;
