@@ -53,12 +53,10 @@
 {%endfor%}
          <td class="col_actions">
           <span class="fa-stack">
-            <i class="fa fa-square-o"></i>
             <a class="fa fa-pencil fa-stack-1x label-default" href="{{url.base}}{{module}}/edit={{d.id}}" ></a>
           </span>
 
           <span class="fa-stack">
-            <i class="fa fa-square-o"></i>
             <a class="fa fa-times fa-stack-1x label-danger" href="{{url.base}}{{module}}/delete={{d.id}}" data-data='{"id": {{d.id}}}' data-method="post" data-modal="delete-confirm"></a>
           </span>
          </td>
@@ -74,10 +72,12 @@
 {%endblock%}
 
      </div>
+{%if page.haschild and child!='add'%}
      <div class="panel-footer">
       <a class="float-right label label-info" href="{{url.base}}{{module}}/add">{%trans%}Add New Record{%endtrans%}</a>
        {{page.desc}}
      </div>
+{%endif%}
    </div>
   </div>
  </div>

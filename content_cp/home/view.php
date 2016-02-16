@@ -21,7 +21,7 @@ class view extends \mvc\view
 
 		// $this->global->js             = [$this->url->myStatic.'js/highcharts/highcharts.js'];
 		// $this->data->page['desc']  = 'salam';
-		$this->data->page['haschild'] = false;
+		$this->data->page['haschild'] = true;
 		$this->data->page['title']    = T_(ucfirst(\lib\router::get_url(' ')));
 
 		$this->data->dir['right']   = $this->global->direction == 'rtl'? 'left':  'right';
@@ -32,51 +32,42 @@ class view extends \mvc\view
 		{
 			case 'tags':
 				$this->data->page['desc']     = T_('Assign keywords to your posts using tags');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'categories':
 				$this->data->page['desc']     = T_('Use categories to define sections of your site and group related posts');
 				$this->data->page['title']    = T_('Categories');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'filecategories':
 				$this->data->page['desc']     = T_('Use categories to define sections of your site and group related files');
 				$this->data->page['title']    = T_('File Categories');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'bookcategories':
 				$this->data->page['desc']     = T_('Use categories to define sections of your site and group related books');
 				$this->data->page['title']    = T_('Book Categories');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'books':
 				$this->data->page['desc']     = T_('Use book to define important parts to use in posts');
 				$this->data->page['title']    = T_('books');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'posts':
 				$this->data->page['desc']     = T_('Use posts to share your news in specefic category');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'pages':
 				$this->data->page['desc']     = T_('Use pages to share your static content');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'attachments':
 				$this->data->page['desc']     = T_('Upload your media');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'socialnetwork':
 				$this->data->page['desc']     = T_('Publish new post in social networks');
-				$this->data->page['haschild'] = true;
 				break;
 
 			case 'options':
@@ -136,6 +127,14 @@ class view extends \mvc\view
 			default:
 				# code...
 				break;
+		}
+
+		if($this->data->page['haschild'])
+		{
+			// Check permission and if user can do this operation
+			// allow to do it, else show related message in notify center
+			$myResult = $this->access('cp', $mymodule, 'add');
+			$this->data->page['haschild'] = $myResult? true: false;
 		}
 		// $this->data->site['title']  = T_('Control Panel'). ' - ' . $this->data->site['title'];
 	}
