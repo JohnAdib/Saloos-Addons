@@ -92,31 +92,32 @@ class model extends \content_cp\home\model
 					->or('option_status', 'IS', "NULL")
 					->or('option_status', "")
 					->groupClose('g_status')
-
 					->select()
-					->allassoc()
-					;
+					->allassoc();
 
-		// var_dump($qry_options->string());
+		// get list of permissions
+		$permList = $this->sql()->table('options')
+			->where('user_id', 'IS', 'NULL')
+			->and('post_id', 'IS', "NULL")
+			->and('option_cat', 'permissions')
+			->and('option_status',"enable")
+			->select()
+			->allassoc('option_value');
+		$qry_result['permissions'] =
+		[
+			'value' => null,
+			'meta'  => $permList
+		];
 
 		foreach ($qry_options as $key => $row)
 		{
 			if($row['option_key'] == 'permissions')
 			{
-				$permList = $this->sql()->table('options')
-					->where('user_id', 'IS', 'NULL')
-					->and('post_id', 'IS', "NULL")
-					->and('option_cat', 'permissions')
-					->and('option_status',"enable")
-					->select()
-					->allassoc('option_value');
-
 				$myValue = $row['option_value'];
 				if(!in_array($myValue, $permList))
 				{
 					$myValue = $permList[count($permList)-1];
 				}
-
 				$qry_result[$row['option_key']] =
 				[
 					'value' => $myValue,

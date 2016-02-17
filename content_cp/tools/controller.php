@@ -45,6 +45,7 @@ class controller extends \content_cp\home\controller
 					break;
 				}
 				\lib\utility\Linfo::show();
+				exit();
 
 				$this->display_name	= 'content_cp/templates/raw-all.html';
 
