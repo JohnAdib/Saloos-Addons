@@ -96,13 +96,7 @@ class model extends \content_cp\home\model
 					->allassoc();
 
 		// get list of permissions
-		$permList = $this->sql()->table('options')
-			->where('user_id', 'IS', 'NULL')
-			->and('post_id', 'IS', "NULL")
-			->and('option_cat', 'permissions')
-			->and('option_status',"enable")
-			->select()
-			->allassoc('option_value');
+		$permList = $this->permList();
 		$qry_result['permissions'] =
 		[
 			'value' => null,

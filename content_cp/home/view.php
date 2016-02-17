@@ -222,6 +222,18 @@ class view extends \mvc\view
 				break;
 		}
 
+		// if module for users then fill permission list
+		if($this->cpModule('raw') === 'users')
+		{
+			$myPermList = $this->data->form->users->user_permission;
+			$myPermList->type('select');
+			// get list of permissions
+			foreach ($this->model()->permList() as $value)
+			{
+				$myPermList->child()->value($value)->label(T_($value));
+			}
+		}
+
 
 		if($mychild === 'edit')
 		{
